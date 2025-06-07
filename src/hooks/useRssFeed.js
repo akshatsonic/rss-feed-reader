@@ -134,7 +134,7 @@ export const useRssFeed = (feedUrls, options = {}) => {
 
     // Only fetch if we have URLs
     if (feedUrls && (Array.isArray(feedUrls) ? feedUrls.length > 0 : true)) {
-      fetchFeeds();
+      // The function will be called by the second useEffect
     }
     
   }, [feedUrls, refreshInterval, feeds.length]);
