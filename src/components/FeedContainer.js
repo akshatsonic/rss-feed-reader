@@ -20,9 +20,8 @@ import {
 
 // Default RSS feeds
 const DEFAULT_FEEDS = [
-  'https://techcrunch.com/feed/',
   'https://www.theverge.com/rss/index.xml',
-  'https://feeds.feedburner.com/ProgrammableWeb'
+  'https://www.wired.com/feed/rss'
 ];
 
 /**

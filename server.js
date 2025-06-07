@@ -8,12 +8,40 @@ const app = express();
 const port = 3001;
 
 // Create RSS parser instance with more lenient parsing options
+
 const parser = new Parser({
   customFields: {
-    feed: ['subtitle', 'icon'],
-    item: ['media:content', 'enclosure', 'content:encoded', 'content']
+    feed: [
+      'subtitle',
+      'icon',
+      'logo',         // For Atom feeds
+      'updated',      // Atom last updated
+      'generator',    // Common in both
+      'language',     // RSS/Atom
+      ['itunes:author', 'itunesAuthor'], // iTunes podcast feeds
+      ['itunes:summary', 'itunesSummary'],
+      ['itunes:image', 'itunesImage'],
+      ['itunes:category', 'itunesCategory']
+    ],
+    item: [
+      'media:content',
+      'enclosure',
+      'content:encoded',
+      'content',
+      'summary',      // Atom
+      'description',  // RSS
+      'pubDate',      // RSS
+      'published',    // Atom
+      'updated',      // Atom
+      ['itunes:duration', 'itunesDuration'],
+      ['itunes:episode', 'itunesEpisode'],
+      ['itunes:season', 'itunesSeason'],
+      ['itunes:explicit', 'itunesExplicit'],
+      ['media:thumbnail', 'mediaThumbnail'],
+      ['media:description', 'mediaDescription']
+    ]
   },
-  defaultRSS: 2.0
+  // No need to force defaultRSS, let the parser auto-detect
 });
 
 // Enable CORS for all routes

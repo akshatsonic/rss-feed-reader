@@ -152,6 +152,10 @@ function extractThumbnail(item) {
   if (item.media && item.media.content && item.media.content.url) {
     return item.media.content.url;
   }
+
+  if(item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) {
+    return item.mediaThumbnail.$.url;
+  }
   
   if (item.enclosure && item.enclosure.url) {
     return item.enclosure.url;
