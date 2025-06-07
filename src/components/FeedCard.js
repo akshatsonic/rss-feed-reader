@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { format, parseISO } from 'date-fns';
+import { useTheme } from '../contexts/ThemeContext';
 
 import {
   FeedCard as StyledFeedCard,
@@ -16,7 +17,10 @@ import {
 /**
  * Card component for displaying RSS feed items
  */
-const FeedCard = ({ item, onClick }) => {
+const FeedCard = ({ item, onClick, theme: propTheme }) => {
+  // Use theme from context if not provided as prop
+  const themeContext = useTheme();
+  const theme = propTheme || { isDarkMode: themeContext.isDarkMode };
   // Format publication date with error handling for different date formats
   const formatDate = (dateString) => {
     if (!dateString) return 'Unknown date';
@@ -83,22 +87,23 @@ const FeedCard = ({ item, onClick }) => {
       }}
       className="feed-card" // For potential CSS targeting
     >
-      <StyledFeedCard>
+      <StyledFeedCard theme={theme}>
       <CardImage 
         src={item.thumbnail} 
         $layoutId={`card-image-${item.id}`}
+        theme={theme}
       />
-      <CardContent>
-        <CardTitle $layoutId={`card-title-${item.id}`}>
+      <CardContent theme={theme}>
+        <CardTitle $layoutId={`card-title-${item.id}`} theme={theme}>
           {item.title}
         </CardTitle>
-        <CardMeta>
-          <CardDate>
+        <CardMeta theme={theme}>
+          <CardDate theme={theme}>
             <IoCalendarOutline />
             {formattedDate}
           </CardDate>
         </CardMeta>
-        <CardExcerpt>
+        <CardExcerpt theme={theme}>
           {stripHtmlTags(item.content).substring(0, 120)}
           {stripHtmlTags(item.content).length > 120 ? '...' : ''}
         </CardExcerpt>

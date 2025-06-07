@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { useRssFeed } from '../hooks/useRssFeed';
+import { useTheme } from '../contexts/ThemeContext';
 import FeedCard from './FeedCard';
 import ArticleModal from './ArticleModal';
 import { FaRss } from 'react-icons/fa';
@@ -33,6 +34,9 @@ const FeedContainer = ({ customFeeds = [] }) => {
   
   const [selectedFeedIndex, setSelectedFeedIndex] = useState(0);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  
+  // Get theme from context
+  const { isDarkMode } = useTheme();
   
   // Use our custom hook to fetch the feeds with a 30-minute refresh interval
   const { feeds, loading, error, refreshFeeds, lastFetchTime } = useRssFeed(allFeeds, {
@@ -91,7 +95,7 @@ const FeedContainer = ({ customFeeds = [] }) => {
 
   if (localLoading) {
     return (
-      <LoadingContainer>
+      <LoadingContainer theme={{ isDarkMode }}>
         <Spinner 
           animate={{ rotate: 360 }}
           transition={{ 
@@ -99,6 +103,7 @@ const FeedContainer = ({ customFeeds = [] }) => {
             repeat: Infinity, 
             ease: "linear" 
           }}
+          theme={{ isDarkMode }}
         />
         <p style={{ marginTop: '1rem' }}>Loading feeds...</p>
       </LoadingContainer>
@@ -107,7 +112,7 @@ const FeedContainer = ({ customFeeds = [] }) => {
 
   if (error) {
     return (
-      <ErrorContainer>
+      <ErrorContainer theme={{ isDarkMode }}>
         <BiError size={48} />
         <h3>Failed to load RSS feeds</h3>
         <p>Error: {error.message}</p>
@@ -118,7 +123,7 @@ const FeedContainer = ({ customFeeds = [] }) => {
   
   if (!feeds || feeds.length === 0) {
     return (
-      <ErrorContainer>
+      <ErrorContainer theme={{ isDarkMode }}>
         <BiError size={48} />
         <h3>No feeds available</h3>
         <p>No RSS feeds could be loaded. Please check your feed URLs.</p>
@@ -131,7 +136,7 @@ const FeedContainer = ({ customFeeds = [] }) => {
   
   if (!currentFeed) {
     return (
-      <ErrorContainer>
+      <ErrorContainer theme={{ isDarkMode }}>
         <BiError size={48} />
         <h3>No feed selected</h3>
         <p>The selected feed is not available. Please try another one.</p>
@@ -141,7 +146,7 @@ const FeedContainer = ({ customFeeds = [] }) => {
   
   if (!currentFeed.items || !Array.isArray(currentFeed.items) || currentFeed.items.length === 0) {
     return (
-      <ErrorContainer>
+      <ErrorContainer theme={{ isDarkMode }}>
         <BiError size={48} />
         <h3>No items in feed</h3>
         <p>The selected feed doesn't contain any items.</p>
@@ -151,6 +156,7 @@ const FeedContainer = ({ customFeeds = [] }) => {
             <FeedButton
               key={index}
               active={index === selectedFeedIndex}
+              theme={{ isDarkMode }}
               onClick={() => setSelectedFeedIndex(index)}
             >
               <FaRss style={{ marginRight: '0.5rem' }} />
@@ -165,11 +171,12 @@ const FeedContainer = ({ customFeeds = [] }) => {
   return (
     <>
       {/* Feed selector buttons */}
-      <FeedSelector>
+      <FeedSelector theme={{ isDarkMode }}>
         {feeds.map((feed, index) => (
           <FeedButton
             key={index}
             $active={index === selectedFeedIndex}
+            theme={{ isDarkMode }}
             onClick={() => setSelectedFeedIndex(index)}
           >
             <FaRss style={{ marginRight: '0.5rem' }} />
@@ -181,12 +188,13 @@ const FeedContainer = ({ customFeeds = [] }) => {
           onClick={refreshFeeds} 
           title="Refresh feeds"
           disabled={loading || localLoading}
+          theme={{ isDarkMode }}
         >
           <IoRefresh size={18} />
         </RefreshButton>
         
         {lastFetchTime && (
-          <LastUpdateText title={lastFetchTime.toLocaleString()}>
+          <LastUpdateText title={lastFetchTime.toLocaleString()} theme={{ isDarkMode }}>
             <IoTimeOutline size={14} />
             Updated {formatDistanceToNow(lastFetchTime, { addSuffix: true })}
           </LastUpdateText>
@@ -200,6 +208,7 @@ const FeedContainer = ({ customFeeds = [] }) => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
+          theme={{ isDarkMode }}
         >
           <AnimatePresence>
             {currentFeed.items.map((item) => (
@@ -207,6 +216,7 @@ const FeedContainer = ({ customFeeds = [] }) => {
                 key={item.id}
                 item={item}
                 onClick={handleCardClick}
+                theme={{ isDarkMode }}
               />
             ))}
           </AnimatePresence>
@@ -217,6 +227,7 @@ const FeedContainer = ({ customFeeds = [] }) => {
           isOpen={!!selectedArticle}
           onClose={handleCloseModal}
           article={selectedArticle}
+          theme={{ isDarkMode }}
         />
       </LayoutGroup>
     </>

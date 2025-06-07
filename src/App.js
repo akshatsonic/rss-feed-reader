@@ -1,7 +1,9 @@
 import React from 'react';
 import FeedContainer from './components/FeedContainer';
 import ErrorLogger from './components/ErrorLogger';
-import { AppContainer, Header, Title, Subtitle } from './styles/StyledComponents';
+import ThemeToggle from './components/ThemeToggle';
+import { useTheme } from './contexts/ThemeContext';
+import { AppContainer, Header, Title, Subtitle, GlobalStyle } from './styles/StyledComponents';
 
 function App() {
   // You can add your custom RSS feeds here
@@ -10,16 +12,26 @@ function App() {
     // 'https://example.com/rss.xml',
   ];
 
+  const { isDarkMode } = useTheme();
+
   return (
-    <AppContainer>
-      <Header>
-        <Title>RSS Feed Reader</Title>
-        <Subtitle>Stay updated with your favorite content in one place</Subtitle>
-      </Header>
-      
-      <FeedContainer customFeeds={customFeeds} />
-      <ErrorLogger />
-    </AppContainer>
+    <>
+      <GlobalStyle theme={{ isDarkMode }} />
+      <AppContainer theme={{ isDarkMode }}>
+        <Header>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <Title theme={{ isDarkMode }}>RSS Feed Reader</Title>
+              <Subtitle theme={{ isDarkMode }}>Stay updated with your favorite content in one place</Subtitle>
+            </div>
+            <ThemeToggle />
+          </div>
+        </Header>
+        
+        <FeedContainer customFeeds={customFeeds} />
+        <ErrorLogger />
+      </AppContainer>
+    </>
   );
 }
 

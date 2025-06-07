@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IoClose, IoOpenOutline } from 'react-icons/io5';
 import { format, parseISO } from 'date-fns';
+import { useTheme } from '../contexts/ThemeContext';
 
 import {
   Overlay,
@@ -17,7 +18,10 @@ import {
 /**
  * Modal component for displaying full article content
  */
-const ArticleModal = ({ isOpen, onClose, article }) => {
+const ArticleModal = ({ isOpen, onClose, article, theme: propTheme }) => {
+  // Use theme from context if not provided as prop
+  const themeContext = useTheme();
+  const theme = propTheme || { isDarkMode: themeContext.isDarkMode };
   if (!article) return null;
   
   // Format publication date with error handling for different date formats
@@ -97,17 +101,19 @@ const ArticleModal = ({ isOpen, onClose, article }) => {
           animate="visible"
           exit="exit"
           onClick={onClose}
+          theme={theme}
         >
           <Modal
             variants={modalVariants}
             layoutId={`card-container-${article.id}`}
             onClick={(e) => e.stopPropagation()}
+            theme={theme}
           >
-            <ModalHeader>
-              <ModalTitle $layoutId={`card-title-${article.id}`}>
+            <ModalHeader theme={theme}>
+              <ModalTitle $layoutId={`card-title-${article.id}`} theme={theme}>
                 {article.title}
               </ModalTitle>
-              <CloseButton onClick={onClose}>
+              <CloseButton onClick={onClose} theme={theme}>
                 <IoClose />
               </CloseButton>
             </ModalHeader>
@@ -126,14 +132,14 @@ const ArticleModal = ({ isOpen, onClose, article }) => {
               </motion.div>
             )}
             
-            <ModalBody dangerouslySetInnerHTML={{ __html: article.content }} />
+            <ModalBody dangerouslySetInnerHTML={{ __html: article.content }} theme={theme} />
             
-            <ModalFooter>
+            <ModalFooter theme={theme}>
               <div>
                 <p>Published: {formattedDate}</p>
                 {article.author && <p>Author: {article.author}</p>}
               </div>
-              <SourceLink href={article.link} target="_blank" rel="noopener noreferrer">
+              <SourceLink href={article.link} target="_blank" rel="noopener noreferrer" theme={theme}>
                 Read original article <IoOpenOutline />
               </SourceLink>
             </ModalFooter>
