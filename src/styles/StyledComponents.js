@@ -63,11 +63,46 @@ export const FeedCard = styled(motion.div)`
 
 export const CardImage = styled.div`
   height: 200px;
-  background-image: url(${props => props.src || 'https://via.placeholder.com/300x200'});
+  background-color: ${props => props.theme?.isDarkMode ? '#242430' : '#f0f0f0'};
+  background-image: ${props => props.src ? `url(${props.src})` : 'none'};
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+  position: relative;
+  overflow: hidden;
+
+  .missing-image-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: help;
+    z-index: 5;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  
+  .missing-image-tooltip {
+    position: absolute;
+    top: 40px;
+    right: 0px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+  }
 `;
 
 export const CardContent = styled.div`

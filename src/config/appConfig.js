@@ -41,7 +41,11 @@ export const feedSources = [
       maxExcerptLength: 100,
       preferredImageSize: 'medium'
     },
-    enabled: true  // Can be enabled by users later
+    feedProperties: {
+      missingThumbnails: true,     // Flag indicating this feed typically lacks thumbnails
+      placeholderImage: 'https://techcrunch.com/wp-content/uploads/2021/01/TC-logo-2.jpg'  // Optional placeholder image
+    },
+    enabled: true
   }
 ];
 
@@ -51,6 +55,12 @@ export const defaultDisplayOptions = {
   maxExcerptLength: 120,
   preferredImageSize: 'medium',
   darkModeEnabled: false
+};
+
+// Default feed properties
+export const defaultFeedProperties = {
+  missingThumbnails: false,
+  placeholderImage: 'https://via.placeholder.com/300x200?text=No+Thumbnail'
 };
 
 /**
@@ -88,6 +98,30 @@ export const shouldShowModalThumbnail = (sourceId) => {
   const source = getFeedSourceById(sourceId);
   if (!source) return defaultDisplayOptions.showModalThumbnail;
   return source.displayOptions.showModalThumbnail;
+};
+
+/**
+ * Check if a feed source typically has missing thumbnails
+ * @param {string} sourceId - Source identifier
+ * @returns {boolean} - Whether the feed typically has missing thumbnails
+ */
+export const hasMissingThumbnails = (sourceId) => {
+  const source = getFeedSourceById(sourceId);
+  if (!source || !source.feedProperties) return defaultFeedProperties.missingThumbnails;
+  return !!source.feedProperties.missingThumbnails;
+};
+
+/**
+ * Get placeholder image for a source when thumbnails are missing
+ * @param {string} sourceId - Source identifier
+ * @returns {string} - URL to placeholder image
+ */
+export const getPlaceholderImage = (sourceId) => {
+  const source = getFeedSourceById(sourceId);
+  if (!source || !source.feedProperties || !source.feedProperties.placeholderImage) {
+    return defaultFeedProperties.placeholderImage;
+  }
+  return source.feedProperties.placeholderImage;
 };
 
 /**

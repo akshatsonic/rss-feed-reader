@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { IoCalendarOutline } from 'react-icons/io5';
+import { IoCalendarOutline, IoImageOutline } from 'react-icons/io5';
 import { format, parseISO } from 'date-fns';
 import { useTheme } from '../contexts/ThemeContext';
+import { hasMissingThumbnails, getPlaceholderImage } from '../config/appConfig';
 
 import {
   FeedCard as StyledFeedCard,
@@ -51,6 +52,32 @@ const FeedCard = ({ item, onClick, theme: propTheme }) => {
     return html.replace(/<[^>]*>?/gm, '');
   };
 
+  // State for tooltip display
+  const [showTooltip, setShowTooltip] = useState(false);
+  
+  // Determine if this source typically lacks thumbnails
+  const sourceHasMissingThumbnails = hasMissingThumbnails(item.source);
+  
+  // Get appropriate placeholder based on source
+  const placeholderImage = getPlaceholderImage(item.source);
+  
+  // Validate if thumbnail is a valid URL
+  const validateThumbnail = (url) => {
+    if (!url) return null;
+    // Basic URL validation
+    try {
+      new URL(url);
+      return url;
+    } catch (e) {
+      console.warn('Invalid thumbnail URL:', url);
+      return null;
+    }
+  };
+
+  // Get the thumbnail or use placeholder
+  const validatedThumbnail = validateThumbnail(item.thumbnail);
+  const finalThumbnail = validatedThumbnail || (sourceHasMissingThumbnails ? placeholderImage : null);
+
   // Card animation variants
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -89,10 +116,34 @@ const FeedCard = ({ item, onClick, theme: propTheme }) => {
     >
       <StyledFeedCard theme={theme}>
       <CardImage 
-        src={item.thumbnail} 
+        src={finalThumbnail} 
         $layoutId={`card-image-${item.id}`}
         theme={theme}
-      />
+      >
+        {sourceHasMissingThumbnails && (
+          <div 
+            className="missing-image-indicator"
+            onMouseEnter={() => setShowTooltip(true)}
+            onMouseLeave={() => setShowTooltip(false)}
+            style={{
+              backgroundColor: theme.isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.7)'
+            }}
+          >
+            <IoImageOutline 
+              color={theme.isDarkMode ? '#f0f0f0' : '#333'} 
+              size={18} 
+            />
+            {showTooltip && (
+              <div className="missing-image-tooltip" style={{
+                backgroundColor: theme.isDarkMode ? '#3a3a3a' : 'white',
+                color: theme.isDarkMode ? '#f0f0f0' : '#333',
+              }}>
+                This feed does not provide images in RSS
+              </div>
+            )}
+          </div>
+        )}
+      </CardImage>
       <CardContent theme={theme}>
         <CardTitle $layoutId={`card-title-${item.id}`} theme={theme}>
           {item.title}
