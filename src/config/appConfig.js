@@ -75,7 +75,7 @@ export const defaultDisplayOptions = {
   showModalThumbnail: true,
   maxExcerptLength: 120,
   preferredImageSize: 'medium',
-  darkModeEnabled: false
+  darkModeEnabled: true  // Dark mode enabled by default
 };
 
 // Default feed properties

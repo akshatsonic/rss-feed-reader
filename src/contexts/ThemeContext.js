@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { defaultDisplayOptions } from '../config/appConfig';
 
 // Create context with default light theme
 export const ThemeContext = createContext({
@@ -8,10 +9,11 @@ export const ThemeContext = createContext({
 
 // Theme provider component
 export const ThemeProvider = ({ children }) => {
-  // Check if user previously selected dark mode
+  // Check if user previously selected dark mode, otherwise use default from config
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark';
+    // If theme is explicitly saved, use that; otherwise use the default setting
+    return savedTheme ? savedTheme === 'dark' : defaultDisplayOptions.darkModeEnabled;
   });
 
   // Toggle between light and dark themes
