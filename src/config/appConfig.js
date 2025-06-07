@@ -11,6 +11,7 @@ export const feedSources = [
     url: 'https://www.theverge.com/rss/index.xml',
     color: '#5270F8',  // Brand color for styling
     icon: 'news',      // Icon identifier (for potential future use)
+    logo: 'https://platform.theverge.com/wp-content/uploads/sites/2/2025/01/verge-rss-large_80b47e.png?w=150&h=150&crop=1',
     displayOptions: {
       showModalThumbnail: false,  // Don't show thumbnails in modal for The Verge
       maxExcerptLength: 120,      // Max length for excerpts
@@ -23,6 +24,7 @@ export const feedSources = [
     url: 'https://www.wired.com/feed/rss',
     color: '#000000',  // Brand color for styling
     icon: 'tech',
+    logo: 'https://www.wired.com/favicon.ico',
     displayOptions: {
       showModalThumbnail: true,   // Show thumbnails in modal for WIRED
       maxExcerptLength: 120,
@@ -36,6 +38,7 @@ export const feedSources = [
     url: 'https://techcrunch.com/feed/',
     color: '#0A9E01',
     icon: 'startup',
+    logo: 'https://techcrunch.com/wp-content/uploads/2015/02/cropped-cropped-favicon-gradient.png?w=32',
     displayOptions: {
       showModalThumbnail: true,
       maxExcerptLength: 100,
@@ -61,6 +64,13 @@ export const defaultDisplayOptions = {
 export const defaultFeedProperties = {
   missingThumbnails: false,
   placeholderImage: 'https://via.placeholder.com/300x200?text=No+Thumbnail'
+};
+
+// Default logo configuration
+export const defaultLogo = {
+  url: null,  // Will use FaRss icon if no URL is provided
+  size: 20,   // Default logo size in pixels
+  fallbackIcon: 'rss'  // Icon to use if logo fails to load
 };
 
 /**

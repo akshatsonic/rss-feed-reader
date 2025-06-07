@@ -104,6 +104,8 @@ export const RssService = {
       });
       
       const feed = response.data;
+      // Add source ID to feed object
+      feed.source = sourceId;
       console.log('Feed data received:', feed);
       
       // If feed is not in expected format, normalize it

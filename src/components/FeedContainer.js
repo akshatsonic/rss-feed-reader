@@ -4,7 +4,8 @@ import { useRssFeed } from '../hooks/useRssFeed';
 import { useTheme } from '../contexts/ThemeContext';
 import FeedCard from './FeedCard';
 import ArticleModal from './ArticleModal';
-import { getActiveFeedUrls, getActiveFeedSources } from '../config/appConfig';
+import FeedLogo from './FeedLogo';
+import { getActiveFeedUrls, getActiveFeedSources, feedSources } from '../config/appConfig';
 import { FaRss } from 'react-icons/fa';
 import { BiError } from 'react-icons/bi';
 import { IoRefresh, IoTimeOutline } from 'react-icons/io5';
@@ -153,17 +154,27 @@ const FeedContainer = ({ customFeeds = [] }) => {
         <p>The selected feed doesn't contain any items.</p>
         
         <FeedSelector>
-          {feeds.map((feed, index) => (
-            <FeedButton
-              key={index}
-              active={index === selectedFeedIndex}
-              theme={{ isDarkMode }}
-              onClick={() => setSelectedFeedIndex(index)}
-            >
-              <FaRss style={{ marginRight: '0.5rem' }} />
-              {feed.title || `Feed ${index + 1}`}
-            </FeedButton>
-          ))}
+          {feeds.map((feed, index) => {
+            // Find source config for this feed
+            const sourceId = feed.source || feed.title?.toLowerCase().replace(/\s+/g, '-');
+            const sourceConfig = feedSources.find(source => source.id === sourceId) || {};
+            
+            return (
+              <FeedButton
+                key={index}
+                active={index === selectedFeedIndex}
+                theme={{ isDarkMode }}
+                onClick={() => setSelectedFeedIndex(index)}
+              >
+                <FeedLogo 
+                  logoUrl={sourceConfig.logo} 
+                  feedId={sourceId} 
+                  theme={{ isDarkMode }}
+                />
+                {feed.title || `Feed ${index + 1}`}
+              </FeedButton>
+            );
+          })}
         </FeedSelector>
       </ErrorContainer>
     );
@@ -173,17 +184,27 @@ const FeedContainer = ({ customFeeds = [] }) => {
     <>
       {/* Feed selector buttons */}
       <FeedSelector theme={{ isDarkMode }}>
-        {feeds.map((feed, index) => (
-          <FeedButton
-            key={index}
-            $active={index === selectedFeedIndex}
-            theme={{ isDarkMode }}
-            onClick={() => setSelectedFeedIndex(index)}
-          >
-            <FaRss style={{ marginRight: '0.5rem' }} />
-            {feed.title || `Feed ${index + 1}`}
-          </FeedButton>
-        ))}
+        {feeds.map((feed, index) => {
+          // Find source config for this feed
+          const sourceId = feed.source || feed.title?.toLowerCase().replace(/\s+/g, '-');
+          const sourceConfig = feedSources.find(source => source.id === sourceId) || {};
+          
+          return (
+            <FeedButton
+              key={index}
+              $active={index === selectedFeedIndex}
+              theme={{ isDarkMode }}
+              onClick={() => setSelectedFeedIndex(index)}
+            >
+              <FeedLogo 
+                logoUrl={sourceConfig.logo} 
+                feedId={sourceId} 
+                theme={{ isDarkMode }}
+              />
+              {feed.title || `Feed ${index + 1}`}
+            </FeedButton>
+          );
+        })}
         
         <RefreshButton 
           onClick={refreshFeeds} 

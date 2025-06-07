@@ -323,6 +323,16 @@ export const FeedButton = styled.button`
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  
+  /* Fix for vertical alignment */
+  img, svg {
+    display: block;
+    vertical-align: middle;
+  }
   
   &:hover {
     background: ${props => {
