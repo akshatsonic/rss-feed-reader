@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { getFeedSourceById } from '../config/appConfig';
 
-// Local proxy server endpoint
-const API_ENDPOINT = 'http://localhost:3001/api/rss';
+// Select API endpoint based on environment
+// In development: use local server, in production: use relative path
+const API_ENDPOINT = process.env.NODE_ENV === 'production' 
+  ? '/api/rss'  // Production (Vercel serverless function)
+  : 'http://localhost:3001/api/rss'; // Development (local server)
 
 /**
  * Service for fetching and parsing RSS feeds
