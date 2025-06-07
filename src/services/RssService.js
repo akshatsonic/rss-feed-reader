@@ -59,6 +59,9 @@ export const RssService = {
       }
     }
     
+    // Get source identifier from URL
+    const sourceId = this.getFeedSource(feedUrl);
+    
     // Normalize the items
     const normalizedItems = items.map((item, index) => {
       return {
@@ -70,6 +73,7 @@ export const RssService = {
         author: item.creator || item.author?.name || item.author || 'Unknown',
         categories: item.categories || [],
         thumbnail: extractThumbnail(item),
+        source: sourceId, // Add source identification
       };
     });
     
@@ -89,6 +93,9 @@ export const RssService = {
   async fetchFeed(feedUrl) {
     try {
       console.log('Fetching feed from:', feedUrl);
+      
+      // Get source identifier from URL
+      const sourceId = this.getFeedSource(feedUrl);
       
       // Use our local proxy server to fetch the feed
       const response = await axios.get(API_ENDPOINT, {
@@ -124,6 +131,7 @@ export const RssService = {
         title: feed.title,
         description: feed.description,
         link: feed.link,
+        source: this.getFeedSource(feedUrl), // Add source identifier
         items: feed.items.map(item => ({
           id: item.guid || item.id || item.link,
           title: item.title,
@@ -133,6 +141,7 @@ export const RssService = {
           author: item.creator || item.author || 'Unknown',
           categories: item.categories || [],
           thumbnail: extractThumbnail(item),
+          source: this.getFeedSource(feedUrl), // Add source to each item
         }))
       };
     } catch (error) {
@@ -171,3 +180,28 @@ function extractThumbnail(item) {
   
   return null;
 }
+
+/**
+ * Determine the source identifier from feed URL
+ * @param {string} url - The feed URL
+ * @returns {string} - Source identifier
+ */
+function getFeedSource(url) {
+  if (!url) return 'unknown';
+  
+  if (url.includes('theverge.com')) return 'verge';
+  if (url.includes('wired.com')) return 'wired';
+  if (url.includes('techcrunch.com')) return 'techcrunch';
+  if (url.includes('feedburner.com')) return 'feedburner';
+  
+  // Extract domain as fallback identifier
+  try {
+    const domain = new URL(url).hostname.replace('www.', '');
+    return domain.split('.')[0];
+  } catch (e) {
+    return 'unknown';
+  }
+}
+
+// Add method to the RssService object
+RssService.getFeedSource = getFeedSource;

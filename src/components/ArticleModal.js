@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { IoClose, IoOpenOutline } from 'react-icons/io5';
 import { format, parseISO } from 'date-fns';
 import { useTheme } from '../contexts/ThemeContext';
+import { shouldShowModalThumbnail } from '../config/displayConfig';
 
 import {
   Overlay,
@@ -118,7 +119,7 @@ const ArticleModal = ({ isOpen, onClose, article, theme: propTheme }) => {
               </CloseButton>
             </ModalHeader>
             
-            {article.thumbnail && (
+            {article.thumbnail && shouldShowModalThumbnail(article.source) && (
               <motion.div layoutId={`card-image-${article.id}`}>
                 <img
                   src={article.thumbnail}
