@@ -86,10 +86,10 @@ const FeedCard = ({ item, onClick }) => {
       <StyledFeedCard>
       <CardImage 
         src={item.thumbnail} 
-        layoutId={`card-image-${item.id}`}
+        $layoutId={`card-image-${item.id}`}
       />
       <CardContent>
-        <CardTitle layoutId={`card-title-${item.id}`}>
+        <CardTitle $layoutId={`card-title-${item.id}`}>
           {item.title}
         </CardTitle>
         <CardMeta>

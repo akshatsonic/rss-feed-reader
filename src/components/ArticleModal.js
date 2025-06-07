@@ -104,7 +104,7 @@ const ArticleModal = ({ isOpen, onClose, article }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <ModalHeader>
-              <ModalTitle layoutId={`card-title-${article.id}`}>
+              <ModalTitle $layoutId={`card-title-${article.id}`}>
                 {article.title}
               </ModalTitle>
               <CloseButton onClick={onClose}>
