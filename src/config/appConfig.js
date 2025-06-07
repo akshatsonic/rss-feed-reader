@@ -49,6 +49,24 @@ export const feedSources = [
       placeholderImage: 'https://techcrunch.com/wp-content/uploads/2021/01/TC-logo-2.jpg'  // Optional placeholder image
     },
     enabled: true
+  },
+  {
+    id: 'cnet',
+    name: 'CNET',
+    url: 'https://www.cnet.com/rss/news/',
+    color: '#dc0000', // CNET red color
+    icon: 'tech',
+    logo: 'https://www.cnet.com/favicon.ico',
+    displayOptions: {
+      showModalThumbnail: true,
+      maxExcerptLength: 100,
+      preferredImageSize: 'medium'
+    },
+    feedProperties: {
+      missingThumbnails: false,
+      placeholderImage: 'https://www.cnet.com/a/img/resize/08bdf2e50f95495d61237e84d2b4857df1679c92/hub/2021/10/20/aefb5c5c-47d3-4a3a-91ab-e14ddaa2684a/cnet-logo-red-bg-1200x630.png?auto=webp&fit=crop&height=630&width=1200'
+    },
+    enabled: true
   }
 ];
 
