@@ -35,8 +35,12 @@ export const useRssFeed = (feedUrls, options = {}) => {
   // Use refs to store cached URLs to prevent unnecessary fetches
   const prevUrlsRef = useRef(null);
 
+  // Store the fetchFeeds function in a ref to avoid recreating it on every render
+  const fetchFeedsRef = useRef();
+  
+  // Update the fetchFeeds function ref when needed dependencies change
   useEffect(() => {
-    const fetchFeeds = async () => {
+    fetchFeedsRef.current = async () => {
       // Don't fetch if there's already a request in progress
       if (fetchInProgress.current) {
         console.log('Fetch already in progress, skipping redundant request');
@@ -133,13 +137,24 @@ export const useRssFeed = (feedUrls, options = {}) => {
       fetchFeeds();
     }
     
+  }, [feedUrls, refreshInterval, feeds.length]);
+  
+  // Effect to actually fetch feeds
+  useEffect(() => {
+    // Initial fetch when component mounts or dependencies change
+    if (fetchFeedsRef.current) {
+      fetchFeedsRef.current();
+    }
+    
     // Set up refresh interval if specified
     let intervalId;
     if (refreshInterval > 0) {
       intervalId = setInterval(() => {
         console.log('Checking for feed updates...');
-        if (Date.now() - lastFetchTime >= refreshInterval) {
-          fetchFeeds();
+        if (lastFetchTime && Date.now() - lastFetchTime >= refreshInterval) {
+          if (fetchFeedsRef.current) {
+            fetchFeedsRef.current();
+          }
         }
       }, Math.min(refreshInterval, 60000)); // Check at most once per minute
     }
@@ -148,7 +163,7 @@ export const useRssFeed = (feedUrls, options = {}) => {
       // Clean up interval on unmount
       if (intervalId) clearInterval(intervalId);
     };
-  }, [feedUrls, lastFetchTime]); // Deliberately exclude refreshInterval to avoid re-creating the effect
+  }, [feedUrls, refreshInterval, lastFetchTime]); // Include all dependencies
 
   // Provide a manual refresh function
   const refreshFeeds = () => {
@@ -156,6 +171,11 @@ export const useRssFeed = (feedUrls, options = {}) => {
     const urls = Array.isArray(feedUrls) ? feedUrls : [feedUrls];
     urls.forEach(url => delete feedCache[url]);
     setLastFetchTime(0); // Force a refresh
+    
+    // Trigger fetch immediately
+    if (fetchFeedsRef.current) {
+      fetchFeedsRef.current();
+    }
   };
 
   return { 

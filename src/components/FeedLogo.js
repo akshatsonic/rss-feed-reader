@@ -31,13 +31,11 @@ const IconContainer = styled.div`
  * @returns {JSX.Element} - Rendered component
  */
 const FeedLogo = ({ logoUrl, size = 20, feedId = '', theme, ...props }) => {
-  const [logoLoaded, setLogoLoaded] = useState(true);
   const [logoError, setLogoError] = useState(false);
   
   // Handle logo loading error
   const handleError = () => {
     setLogoError(true);
-    setLogoLoaded(false);
   };
   
   // Show fallback RSS icon if no logo URL or if logo failed to load

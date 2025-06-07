@@ -6,10 +6,9 @@ import FeedCard from './FeedCard';
 import ArticleModal from './ArticleModal';
 import FeedLogo from './FeedLogo';
 import { getActiveFeedUrls, getActiveFeedSources, feedSources } from '../config/appConfig';
-import { FaRss } from 'react-icons/fa';
 import { BiError } from 'react-icons/bi';
 import { IoRefresh, IoTimeOutline } from 'react-icons/io5';
-import { format, formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import {
   FeedGrid,
   LoadingContainer,
@@ -31,8 +30,6 @@ const FeedContainer = ({ customFeeds = [] }) => {
   // Combine configured feeds and custom feeds
   const allFeeds = [...configFeeds, ...customFeeds];
   
-  // Get all feed source data for display
-  const feedSources = getActiveFeedSources();
   
   const [selectedFeedIndex, setSelectedFeedIndex] = useState(0);
   const [selectedArticle, setSelectedArticle] = useState(null);

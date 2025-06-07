@@ -16,8 +16,6 @@ function App() {
   // Get dark mode preference from theme context
   const { isDarkMode } = useTheme();
   
-  // Initialize app with configured default settings
-  const initialDarkMode = defaultDisplayOptions.darkModeEnabled;
 
   return (
     <>
