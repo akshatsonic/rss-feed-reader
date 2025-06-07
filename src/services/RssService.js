@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getFeedSourceById } from '../config/appConfig';
 
 // Local proxy server endpoint
 const API_ENDPOINT = 'http://localhost:3001/api/rss';
@@ -189,6 +190,7 @@ function extractThumbnail(item) {
 function getFeedSource(url) {
   if (!url) return 'unknown';
   
+  // Common sources pattern matching
   if (url.includes('theverge.com')) return 'verge';
   if (url.includes('wired.com')) return 'wired';
   if (url.includes('techcrunch.com')) return 'techcrunch';
@@ -203,5 +205,16 @@ function getFeedSource(url) {
   }
 }
 
-// Add method to the RssService object
+/**
+ * Get source details from URL
+ * @param {string} url - The feed URL
+ * @returns {Object|null} - Source details or null
+ */
+function getSourceDetails(url) {
+  const sourceId = getFeedSource(url);
+  return getFeedSourceById(sourceId);
+}
+
+// Add methods to the RssService object
 RssService.getFeedSource = getFeedSource;
+RssService.getSourceDetails = getSourceDetails;

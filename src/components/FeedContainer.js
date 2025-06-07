@@ -4,6 +4,7 @@ import { useRssFeed } from '../hooks/useRssFeed';
 import { useTheme } from '../contexts/ThemeContext';
 import FeedCard from './FeedCard';
 import ArticleModal from './ArticleModal';
+import { getActiveFeedUrls, getActiveFeedSources } from '../config/appConfig';
 import { FaRss } from 'react-icons/fa';
 import { BiError } from 'react-icons/bi';
 import { IoRefresh, IoTimeOutline } from 'react-icons/io5';
@@ -19,18 +20,18 @@ import {
   LastUpdateText
 } from '../styles/StyledComponents';
 
-// Default RSS feeds
-const DEFAULT_FEEDS = [
-  'https://www.theverge.com/rss/index.xml',
-  'https://www.wired.com/feed/rss'
-];
-
 /**
  * Container component for displaying RSS feeds
  */
 const FeedContainer = ({ customFeeds = [] }) => {
-  // Combine default and custom feeds
-  const allFeeds = [...DEFAULT_FEEDS, ...customFeeds];
+  // Get active feeds from configuration
+  const configFeeds = getActiveFeedUrls();
+  
+  // Combine configured feeds and custom feeds
+  const allFeeds = [...configFeeds, ...customFeeds];
+  
+  // Get all feed source data for display
+  const feedSources = getActiveFeedSources();
   
   const [selectedFeedIndex, setSelectedFeedIndex] = useState(0);
   const [selectedArticle, setSelectedArticle] = useState(null);

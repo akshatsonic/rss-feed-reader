@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IoClose, IoOpenOutline } from 'react-icons/io5';
 import { format, parseISO } from 'date-fns';
 import { useTheme } from '../contexts/ThemeContext';
-import { shouldShowModalThumbnail } from '../config/displayConfig';
+import { shouldShowModalThumbnail } from '../config/appConfig';
 
 import {
   Overlay,

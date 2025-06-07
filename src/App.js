@@ -4,15 +4,20 @@ import ErrorLogger from './components/ErrorLogger';
 import ThemeToggle from './components/ThemeToggle';
 import { useTheme } from './contexts/ThemeContext';
 import { AppContainer, Header, Title, Subtitle, GlobalStyle } from './styles/StyledComponents';
+import { defaultDisplayOptions } from './config/appConfig';
 
 function App() {
-  // You can add your custom RSS feeds here
+  // Custom feeds can be added here - these will be merged with configured feeds
   const customFeeds = [
-    // Add your custom feed URLs here
+    // Add your personal feed URLs here
     // 'https://example.com/rss.xml',
   ];
 
+  // Get dark mode preference from theme context
   const { isDarkMode } = useTheme();
+  
+  // Initialize app with configured default settings
+  const initialDarkMode = defaultDisplayOptions.darkModeEnabled;
 
   return (
     <>
