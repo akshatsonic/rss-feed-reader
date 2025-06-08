@@ -67,6 +67,24 @@ export const feedSources = [
       placeholderImage: 'https://www.cnet.com/a/img/resize/08bdf2e50f95495d61237e84d2b4857df1679c92/hub/2021/10/20/aefb5c5c-47d3-4a3a-91ab-e14ddaa2684a/cnet-logo-red-bg-1200x630.png?auto=webp&fit=crop&height=630&width=1200'
     },
     enabled: true
+  },
+  {
+    id: 'zerodha',
+    name: 'Zerodha Tech',
+    url: 'https://zerodha.tech/index.xml',
+    color: '#387ed1', // Zerodha brand blue color
+    icon: 'finance',
+    logo: 'https://zerodha.tech/static/images/favicon.png',
+    displayOptions: {
+      showModalThumbnail: true,
+      maxExcerptLength: 150,
+      preferredImageSize: 'medium'
+    },
+    feedProperties: {
+      missingThumbnails: true,
+      placeholderImage: 'https://zerodha.tech/static/images/logo.svg'
+    },
+    enabled: true
   }
 ];
 
