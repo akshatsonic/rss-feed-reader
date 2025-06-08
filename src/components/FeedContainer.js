@@ -5,7 +5,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import FeedCard from './FeedCard';
 import ArticleModal from './ArticleModal';
 import FeedLogo from './FeedLogo';
-import { getActiveFeedUrls, getActiveFeedSources, feedSources } from '../config/appConfig';
+import { getActiveFeedUrls, feedSources } from '../config/appConfig';
 import { BiError } from 'react-icons/bi';
 import { IoRefresh, IoTimeOutline } from 'react-icons/io5';
 import { formatDistanceToNow } from 'date-fns';

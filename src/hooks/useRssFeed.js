@@ -137,7 +137,7 @@ export const useRssFeed = (feedUrls, options = {}) => {
       // The function will be called by the second useEffect
     }
     
-  }, [feedUrls, refreshInterval, feeds.length]);
+  }, [feedUrls, refreshInterval, feeds.length, lastFetchTime]);
   
   // Effect to actually fetch feeds
   useEffect(() => {

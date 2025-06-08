@@ -4,7 +4,6 @@ import ErrorLogger from './components/ErrorLogger';
 import ThemeToggle from './components/ThemeToggle';
 import { useTheme } from './contexts/ThemeContext';
 import { AppContainer, Header, Title, Subtitle, GlobalStyle } from './styles/StyledComponents';
-import { defaultDisplayOptions } from './config/appConfig';
 
 function App() {
   // Custom feeds can be added here - these will be merged with configured feeds
